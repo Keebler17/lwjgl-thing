@@ -28,12 +28,16 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.Color;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.nio.IntBuffer;
 
 import org.lwjgl.Version;
@@ -42,16 +46,31 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import io.github.keebler17.astrodynamics.obj.Texture;
+
 public class Astrodynamics {
 
 	private long window;
 
+	Texture texture;
+	
+	float h = 0f;
+	float s = 1f;
+	float b = 1f;
+	float inc = .1f;
+	
 	public void run() {
 		System.out.println("Astrodynamics Simulator\nLWJGL " + Version.getVersion());
 
+		
+		try {
+			texture = new Texture(new File("assets/h.png").toURI().toURL(), GL_NEAREST, GL_REPEAT);
+		} catch (MalformedURLException e) {
+			//e.printStackTrace();
+			System.err.println("Could not initialize assets.");
+		}
+		
 		init();
-		
-		
 		loop();
 		
 		glfwFreeCallbacks(window);
@@ -102,31 +121,20 @@ public class Astrodynamics {
 		
 		glfwShowWindow(window);
 	}
-
-	float h = 0f;
-	float s = 1f;
-	float b = 1f;
-	
-	float inc = .1f;
 	
 	private void loop() {
 		
 		while(!glfwWindowShouldClose(window)) {
 			
 			h += inc;
-			
 			Color c = Color.getHSBColor(h, s, b);
-			
-			System.out.println("Color: " + c.toString());
-			
+						
 			GL.createCapabilities();
 			
 			glClearColor(c.getRed()/255f, c.getGreen()/255f, c.getBlue()/255f, 1.0f);
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
 			glfwSwapBuffers(window);
-			
 			glfwPollEvents();
 		}
 		

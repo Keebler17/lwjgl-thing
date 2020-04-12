@@ -22,7 +22,6 @@ public class Texture {
 		InputStream pngStream = null;
 		
 		try {
-			
 			pngStream = png.openStream();
 			
 			PNGDecoder decoder = new PNGDecoder(pngStream);
@@ -54,7 +53,6 @@ public class Texture {
 			
 		} catch(Exception e) {
 			e.printStackTrace();
-			System.exit(1);
 		} finally {
 			if(pngStream != null) {
 				try {
