@@ -5,7 +5,7 @@ import org.lwjgl.openvr.Texture;
 public class Renderer {
 
 	public static void drawImage(Texture img) {
-		img.bind();
+		
 	}
 	
 }
