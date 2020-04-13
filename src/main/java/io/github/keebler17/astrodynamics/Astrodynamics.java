@@ -32,27 +32,29 @@ import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.awt.Color;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.nio.IntBuffer;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
+import io.github.keebler17.astrodynamics.obj.Sprite;
 import io.github.keebler17.astrodynamics.obj.Texture;
 
 public class Astrodynamics {
 
 	private long window;
 
-	Texture texture;
+	Sprite epic;
 	
 	float h = 0f;
 	float s = 1f;
@@ -61,16 +63,16 @@ public class Astrodynamics {
 	
 	public void run() {
 		System.out.println("Astrodynamics Simulator\nLWJGL " + Version.getVersion());
-
+		
+		init();
 		
 		try {
-			texture = new Texture(new File("assets/h.png").toURI().toURL(), GL_NEAREST, GL_REPEAT);
-		} catch (MalformedURLException e) {
-			//e.printStackTrace();
+			epic = new Sprite(new Texture(new File("assets/h.png").toURI().toURL(), GL_NEAREST, GL_REPEAT));
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.err.println("Could not initialize assets.");
 		}
 		
-		init();
 		loop();
 		
 		glfwFreeCallbacks(window);
@@ -116,24 +118,23 @@ public class Astrodynamics {
 		}
 		
 		glfwMakeContextCurrent(window);
-		
 		glfwSwapInterval(1);
 		
 		glfwShowWindow(window);
 	}
 	
-	private void loop() {
-		
+	private void loop() {		
 		while(!glfwWindowShouldClose(window)) {
 			
 			h += inc;
 			Color c = Color.getHSBColor(h, s, b);
 						
 			GL.createCapabilities();
-			
 			glClearColor(c.getRed()/255f, c.getGreen()/255f, c.getBlue()/255f, 1.0f);
-			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			//epic.draw(0, 0);
+			
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
