@@ -133,7 +133,7 @@ public class Astrodynamics {
 			glClearColor(c.getRed()/255f, c.getGreen()/255f, c.getBlue()/255f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
-			//epic.draw(0, 0);
+			//	zepic.draw(0, 0);
 			
 			glfwSwapBuffers(window);
 			glfwPollEvents();
